@@ -1,6 +1,7 @@
 {
   "name": "contador-react",
   "private": true,
+  "homepage": "https://feantuns.github.io/contador/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
