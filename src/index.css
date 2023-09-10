@@ -6,4 +6,18 @@
   html {
     font-family: "Source Sans 3", system-ui, sans-serif;
   }
+
+  body {
+    margin: 0;
+    background-color: #fbfbfb;
+    @apply text-gray-800;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  textarea::placeholder {
+    color: rgba(33, 33, 33, 0.6);
+  }
 }

@@ -1,8 +1,13 @@
 import type { Config } from "tailwindcss";
 
 export default {
-  content: [],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    colors: {
+      gray: {
+        800: "#212121",
+      },
+    },
     extend: {},
   },
   plugins: [],
