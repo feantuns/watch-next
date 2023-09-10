@@ -34,7 +34,7 @@ function App() {
           placeholder="Digite o texto aqui"
           value={text}
           onChange={handleChange}
-          className="w-full resize-none outline-none rounded p-3 text-sm"
+          className="w-full resize-none outline-none rounded p-3 text-sm border"
         />
 
         <footer className="mt-2 leading-8">
