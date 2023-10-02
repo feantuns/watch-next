@@ -1,51 +1,53 @@
-import { ChangeEvent, useState } from "react";
-
-const getWords = (str: string) => str.trim().split(" ").filter(Boolean);
-
-const getWordsLength = (str: string) => getWords(str).length;
-
-const getCharsWithSpace = (str: string) => str.length;
-
-const getCharsWithoutSpace = (str: string) =>
-  getWords(str)
-    .map(word => word.length)
-    .reduce((prev, current) => prev + current, 0);
+import { FormEvent, useRef, useState } from "react";
+import { QueryClientProvider } from "react-query";
+import { queryClient } from "./api/queryClient";
+import { MoviesQuery } from "./components/MoviesQuery";
+import { Layout } from "./components/Layout";
 
 function App() {
-  const [text, setText] = useState<string>("");
+  const [search, setSearch] = useState("");
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  const handleChange = ({
-    target: { value },
-  }: ChangeEvent<HTMLTextAreaElement>) => setText(value);
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    const form = evt.target as HTMLFormElement;
+    const newSearch = (form.elements as any)?.search.value;
+    if (newSearch === search) {
+      searchRef.current?.focus();
+    } else {
+      setSearch(newSearch);
+    }
+  };
 
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <div className="max-w-lg w-full p-6 mb-48">
+    <QueryClientProvider client={queryClient}>
+      <Layout>
         <header className="mb-4">
           <h1 className="text-xl font-bold">
-            Contador de Caracteres{" "}
-            <span className="font-normal">e Palavras</span>
+            Watch <span className="font-normal">next</span>
           </h1>
         </header>
 
-        <textarea
-          cols={30}
-          rows={10}
-          placeholder="Digite o texto aqui"
-          value={text}
-          onChange={handleChange}
-          className="w-full resize-none outline-none rounded p-3 border"
-        />
+        <form
+          onSubmit={handleSubmit}
+          className="w-full flex justify-between gap-4"
+        >
+          <input
+            id="search"
+            type="text"
+            autoFocus
+            ref={searchRef}
+            className="flex-1 p-2 rounded border outline-none"
+            placeholder="Pesquise por um filme ou série"
+          />
+          <button type="submit" className="font-semibold">
+            Buscar
+          </button>
+        </form>
 
-        <footer className="mt-2 leading-8">
-          Caracteres (sem espaços): {getCharsWithoutSpace(text)}
-          <br />
-          Caracteres (com espaços): {getCharsWithSpace(text)}
-          <br />
-          Palavras: {getWordsLength(text)}
-        </footer>
-      </div>
-    </main>
+        {search && <MoviesQuery search={search} />}
+      </Layout>
+    </QueryClientProvider>
   );
 }
 
