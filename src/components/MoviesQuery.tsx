@@ -4,7 +4,7 @@ import { Movie } from "../types";
 import { MovieCard } from "./MovieCard";
 
 interface MoviesQueryProps {
-  search: string;
+  search: string | number;
 }
 
 export function MoviesQuery({ search }: MoviesQueryProps) {
