@@ -5,15 +5,16 @@ import { MovieCard } from "./MovieCard";
 
 interface MoviesQueryProps {
   search: string | number;
+  onSelectMovie: (movie: Movie) => void;
 }
 
-export function MoviesQuery({ search }: MoviesQueryProps) {
+export function MoviesQuery({ search, onSelectMovie }: MoviesQueryProps) {
   const { isLoading, error, data } = useQuery<Movie[]>({
     queryKey: [`/movies?q=${search}`],
   });
 
   const handleClickCard = (movie: Movie) => {
-    console.log("fetch movie", movie);
+    onSelectMovie(movie);
   };
 
   if (isLoading)
