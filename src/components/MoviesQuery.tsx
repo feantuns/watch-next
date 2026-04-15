@@ -5,12 +5,17 @@ import { MovieCard } from "./MovieCard";
 
 interface MoviesQueryProps {
   search: string | number;
+  platform?: string | null;
   onSelectMovie: (movie: Movie) => void;
 }
 
-export function MoviesQuery({ search, onSelectMovie }: MoviesQueryProps) {
+export function MoviesQuery({ search, platform, onSelectMovie }: MoviesQueryProps) {
+  const queryKey = platform
+    ? `/movies?q=${search}&platform=${platform}`
+    : `/movies?q=${search}`;
+
   const { isLoading, error, data } = useQuery<Movie[]>({
-    queryKey: [`/movies?q=${search}`],
+    queryKey: [queryKey],
   });
 
   const handleClickCard = (movie: Movie) => {
@@ -33,6 +38,11 @@ export function MoviesQuery({ search, onSelectMovie }: MoviesQueryProps) {
 
   return (
     <div className="w-[calc(100%+3rem)] ml-[-1.5rem] sm:ml-0 flex flex-wrap gap-4 mt-4">
+      {data?.length === 0 && (
+        <p className="text-gray-500 text-sm mt-2">
+          Nenhum resultado encontrado{platform ? ` para o filtro selecionado` : ""}.
+        </p>
+      )}
       {data?.map(movie => (
         <MovieCard handleClick={handleClickCard} movie={movie} key={movie.id} />
       ))}
