@@ -36,14 +36,33 @@ function App() {
           onSubmit={handleSubmit}
           className="w-full flex justify-between gap-4"
         >
-          <input
-            id="search"
-            type="text"
-            autoFocus
-            ref={searchRef}
-            className="flex-1 p-2 rounded border outline-none"
-            placeholder="Pesquise por um filme ou série"
-          />
+          <div className="relative flex-1">
+            <input
+              id="search"
+              type="text"
+              autoFocus
+              ref={searchRef}
+              className="w-full p-2 rounded border outline-none pr-8"
+              placeholder="Pesquise por um filme ou série"
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearch("");
+                  setSelectedMovie(null);
+                  if (searchRef.current) {
+                    searchRef.current.value = "";
+                    searchRef.current.focus();
+                  }
+                }}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                aria-label="Limpar busca"
+              >
+                ✕
+              </button>
+            )}
+          </div>
           <button type="submit" className="font-semibold">
             Buscar
           </button>

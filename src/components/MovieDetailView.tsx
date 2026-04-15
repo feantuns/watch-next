@@ -11,34 +11,31 @@ interface MovieDetailViewProps {
 export function MovieDetailView({ movie, onClose, onSelectMovie }: MovieDetailViewProps) {
   return (
     <div className="w-full bg-[#fbfbfb] text-gray-800 font-sans mt-4">
-      <button
-        onClick={onClose}
-        className="text-sm font-semibold mb-4 hover:underline"
-      >
-        ← Back
-      </button>
-
-      <div className="flex flex-col items-center gap-4">
+      {/* Current movie — smaller, secondary */}
+      <div className="flex items-center gap-3 opacity-60">
         {movie.src ? (
           <img
             src={movie.src}
             srcSet={movie.srcset}
             alt={movie.name}
-            className="w-full max-w-xs object-contain"
+            className="w-14 h-20 object-cover rounded"
           />
         ) : (
-          <div className="flex items-center justify-center w-full max-w-xs min-h-[360px]">
-            <div className="w-[120px]">
+          <div className="flex items-center justify-center w-14 h-20 bg-gray-100 rounded">
+            <div className="w-8">
               <NoImage />
             </div>
           </div>
         )}
-
-        <h2 className="text-2xl font-bold text-center">{movie.name}</h2>
+        <div>
+          <p className="text-xs uppercase tracking-wide text-gray-400 mb-0.5">Your pick</p>
+          <h2 className="text-sm font-semibold text-gray-600">{movie.name}</h2>
+        </div>
       </div>
 
-      <div className="mt-8">
-        <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-4">
+      {/* Watch next — larger, primary */}
+      <div className="mt-6">
+        <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
           Watch next
         </p>
         <RelatedMovieSection movieId={movie.id} onSelectMovie={onSelectMovie} />

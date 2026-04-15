@@ -9,7 +9,7 @@ interface RelatedMovieCardProps {
 export function RelatedMovieCard({ movie, onClick }: RelatedMovieCardProps) {
   return (
     <div
-      className="flex flex-col w-[120px] cursor-pointer hover:opacity-80 transition-opacity"
+      className="flex items-center gap-4 cursor-pointer group"
       onClick={() => onClick(movie)}
     >
       {movie.src ? (
@@ -17,16 +17,19 @@ export function RelatedMovieCard({ movie, onClick }: RelatedMovieCardProps) {
           src={movie.src}
           srcSet={movie.srcset}
           alt={movie.name}
-          className="w-full object-contain object-top"
+          className="w-full max-w-xs object-contain rounded-md shadow-md group-hover:shadow-lg transition-shadow"
         />
       ) : (
-        <div className="flex items-center justify-center min-h-[178px]">
-          <div className="w-[60px]">
+        <div className="flex items-center justify-center w-full max-w-xs min-h-[360px] bg-gray-100 rounded-md">
+          <div className="w-[100px]">
             <NoImage />
           </div>
         </div>
       )}
-      <div className="pt-2 text-sm font-medium text-center">{movie.name}</div>
+      <div className="flex flex-col gap-1">
+        <p className="text-lg font-bold text-gray-800 group-hover:underline">{movie.name}</p>
+        <span className="text-xs text-indigo-500 font-semibold uppercase tracking-wide">→ Get recommendation</span>
+      </div>
     </div>
   );
 }
