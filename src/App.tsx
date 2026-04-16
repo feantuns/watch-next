@@ -19,6 +19,7 @@ type PlatformId = typeof PLATFORMS[number]["id"];
 function App() {
   const [search, setSearch] = useState("");
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const [visitedIds, setVisitedIds] = useState<string[]>([]);
   const [platform, setPlatform] = useState<PlatformId | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
 
@@ -27,6 +28,7 @@ function App() {
     const form = evt.target as HTMLFormElement;
     const newSearch = (form.elements as any)?.search.value;
     setSelectedMovie(null);
+    setVisitedIds([]);
     if (newSearch === search) {
       searchRef.current?.focus();
     } else {
@@ -34,9 +36,15 @@ function App() {
     }
   };
 
+  const handleSelectMovie = (movie: Movie) => {
+    setVisitedIds(prev => prev.includes(movie.id) ? prev : [...prev, movie.id]);
+    setSelectedMovie(movie);
+  };
+
   const togglePlatform = (id: PlatformId) => {
     setPlatform(prev => (prev === id ? null : id));
     setSelectedMovie(null);
+    setVisitedIds([]);
   };
 
   return (
@@ -103,8 +111,8 @@ function App() {
 
         {search && (
           selectedMovie
-            ? <MovieDetailView movie={selectedMovie} onClose={() => setSelectedMovie(null)} onSelectMovie={setSelectedMovie} />
-            : <MoviesQuery search={search} platform={platform} onSelectMovie={setSelectedMovie} />
+            ? <MovieDetailView movie={selectedMovie} excludeIds={visitedIds} onClose={() => { setSelectedMovie(null); setVisitedIds([]); }} onSelectMovie={handleSelectMovie} />
+            : <MoviesQuery search={search} platform={platform} onSelectMovie={handleSelectMovie} />
         )}
       </Layout>
     </QueryClientProvider>

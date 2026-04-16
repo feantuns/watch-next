@@ -16,11 +16,12 @@ function isValidMovie(data: unknown): data is Movie {
 
 interface RelatedMovieSectionProps {
   movieId: string;
+  excludeIds?: string[];
   onSelectMovie: (movie: Movie) => void;
 }
 
-export function RelatedMovieSection({ movieId, onSelectMovie }: RelatedMovieSectionProps) {
-  const { data, isLoading, isError } = useRelatedMovie(movieId);
+export function RelatedMovieSection({ movieId, excludeIds = [], onSelectMovie }: RelatedMovieSectionProps) {
+  const { data, isLoading, isError } = useRelatedMovie(movieId, excludeIds);
 
   if (isLoading) {
     return (

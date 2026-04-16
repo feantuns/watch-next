@@ -9,7 +9,7 @@ interface RelatedMovieCardProps {
 export function RelatedMovieCard({ movie, onClick }: RelatedMovieCardProps) {
   return (
     <div
-      className="flex items-center gap-4 cursor-pointer group"
+      className="flex flex-col sm:flex-row items-center gap-3 cursor-pointer group"
       onClick={() => onClick(movie)}
     >
       {movie.src ? (
@@ -26,7 +26,7 @@ export function RelatedMovieCard({ movie, onClick }: RelatedMovieCardProps) {
           </div>
         </div>
       )}
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 min-w-0">
         <p className="text-lg font-bold text-gray-800 group-hover:underline">{movie.name}</p>
         <span className="text-xs text-indigo-500 font-semibold uppercase tracking-wide">→ Get recommendation</span>
       </div>

@@ -17,19 +17,21 @@ function normalizeRelatedMovie(raw: RelatedMovieApiResponse): Movie {
   };
 }
 
-export function useRelatedMovie(movieId: string) {
-  const { data, isLoading, isError } = useQuery<Movie>({
-    queryKey: ["/movies/related", movieId],
-    queryFn: ({ queryKey }) =>
+export function useRelatedMovie(movieId: string, excludeIds: string[] = []) {
+  const { data, isLoading, isError, refetch } = useQuery<Movie>({
+    queryKey: ["/movies/related", movieId, excludeIds],
+    queryFn: () =>
       fetch(
-        `${import.meta.env.VITE_APP_BASE_URL}${queryKey[0]}/${queryKey[1]}`
+        `${import.meta.env.VITE_APP_BASE_URL}/movies/related/${movieId}`
       )
         .then(res => res.json())
         .then((raw: RelatedMovieApiResponse | RelatedMovieApiResponse[]) => {
-          const item = Array.isArray(raw) ? raw[0] : raw;
+          const items = Array.isArray(raw) ? raw : [raw];
+          const filtered = items.filter(m => !excludeIds.includes(m.id));
+          const item = filtered.length > 0 ? filtered[0] : items[0];
           return normalizeRelatedMovie(item);
         }),
   });
 
-  return { data, isLoading, isError };
+  return { data, isLoading, isError, refetch };
 }
