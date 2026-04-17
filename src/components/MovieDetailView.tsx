@@ -7,9 +7,11 @@ interface MovieDetailViewProps {
   excludeIds?: string[];
   onClose: () => void;
   onSelectMovie: (movie: Movie) => void;
+  favorites?: string[];
+  onToggleFavorite?: (movie: Movie) => void;
 }
 
-export function MovieDetailView({ movie, excludeIds = [], onClose, onSelectMovie }: MovieDetailViewProps) {
+export function MovieDetailView({ movie, excludeIds = [], onClose, onSelectMovie, favorites, onToggleFavorite }: MovieDetailViewProps) {
   return (
     <div className="w-full bg-[#fbfbfb] text-gray-800 font-sans mt-4">
       {/* Current movie — smaller, secondary */}
@@ -39,7 +41,7 @@ export function MovieDetailView({ movie, excludeIds = [], onClose, onSelectMovie
         <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
           Watch next
         </p>
-        <RelatedMovieSection movieId={movie.id} excludeIds={excludeIds} onSelectMovie={onSelectMovie} />
+        <RelatedMovieSection movieId={movie.id} excludeIds={excludeIds} onSelectMovie={onSelectMovie} favorites={favorites} onToggleFavorite={onToggleFavorite} />
       </div>
     </div>
   );

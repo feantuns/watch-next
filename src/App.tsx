@@ -4,7 +4,7 @@ import { queryClient } from "./api/queryClient";
 import { MoviesQuery } from "./components/MoviesQuery";
 import { MovieDetailView } from "./components/MovieDetailView";
 import { Layout } from "./components/Layout";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import { useFavorites } from "./hooks/useFavorites";
 import { Movie } from "./types";
 
@@ -24,6 +24,7 @@ function AppContent() {
   const [visitedIds, setVisitedIds] = useState<string[]>([]);
   const [platform, setPlatform] = useState<PlatformId | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+  const { user } = useAuth();
   const { favorites, toggleFavorite } = useFavorites();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -116,6 +117,8 @@ function AppContent() {
               excludeIds={visitedIds}
               onClose={() => { setSelectedMovie(null); setVisitedIds([]); }}
               onSelectMovie={handleSelectMovie}
+              favorites={favorites}
+              onToggleFavorite={user ? toggleFavorite : undefined}
             />
           )
           : (
@@ -124,7 +127,7 @@ function AppContent() {
               platform={platform}
               onSelectMovie={handleSelectMovie}
               favorites={favorites}
-              onToggleFavorite={toggleFavorite}
+              onToggleFavorite={user ? toggleFavorite : undefined}
             />
           )
       )}

@@ -8,7 +8,7 @@ interface MoviesQueryProps {
   platform?: string | null;
   onSelectMovie: (movie: Movie) => void;
   favorites: string[];
-  onToggleFavorite: (movie: Movie) => void;
+  onToggleFavorite?: (movie: Movie) => void;
 }
 
 export function MoviesQuery({ search, platform, onSelectMovie, favorites, onToggleFavorite }: MoviesQueryProps) {

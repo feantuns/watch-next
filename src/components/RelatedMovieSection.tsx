@@ -18,9 +18,11 @@ interface RelatedMovieSectionProps {
   movieId: string;
   excludeIds?: string[];
   onSelectMovie: (movie: Movie) => void;
+  favorites?: string[];
+  onToggleFavorite?: (movie: Movie) => void;
 }
 
-export function RelatedMovieSection({ movieId, excludeIds = [], onSelectMovie }: RelatedMovieSectionProps) {
+export function RelatedMovieSection({ movieId, excludeIds = [], onSelectMovie, favorites = [], onToggleFavorite }: RelatedMovieSectionProps) {
   const { data, isLoading, isError } = useRelatedMovie(movieId, excludeIds);
 
   if (isLoading) {
@@ -43,5 +45,5 @@ export function RelatedMovieSection({ movieId, excludeIds = [], onSelectMovie }:
     return <p className="text-sm text-gray-500">No suggestion available.</p>;
   }
 
-  return <RelatedMovieCard movie={data} onClick={onSelectMovie} />;
+  return <RelatedMovieCard movie={data} onClick={onSelectMovie} isFavorite={favorites.includes(data.id)} onToggleFavorite={onToggleFavorite} />;
 }
