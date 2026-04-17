@@ -7,9 +7,11 @@ interface MoviesQueryProps {
   search: string | number;
   platform?: string | null;
   onSelectMovie: (movie: Movie) => void;
+  favorites: string[];
+  onToggleFavorite: (movie: Movie) => void;
 }
 
-export function MoviesQuery({ search, platform, onSelectMovie }: MoviesQueryProps) {
+export function MoviesQuery({ search, platform, onSelectMovie, favorites, onToggleFavorite }: MoviesQueryProps) {
   const queryKey = platform
     ? `/movies?q=${search}&platform=${platform}`
     : `/movies?q=${search}`;
@@ -17,10 +19,6 @@ export function MoviesQuery({ search, platform, onSelectMovie }: MoviesQueryProp
   const { isLoading, error, data } = useQuery<Movie[]>({
     queryKey: [queryKey],
   });
-
-  const handleClickCard = (movie: Movie) => {
-    onSelectMovie(movie);
-  };
 
   if (isLoading)
     return (
@@ -44,7 +42,13 @@ export function MoviesQuery({ search, platform, onSelectMovie }: MoviesQueryProp
         </p>
       )}
       {data?.map(movie => (
-        <MovieCard handleClick={handleClickCard} movie={movie} key={movie.id} />
+        <MovieCard
+          key={movie.id}
+          movie={movie}
+          handleClick={onSelectMovie}
+          isFavorite={favorites.includes(movie.id)}
+          onToggleFavorite={onToggleFavorite}
+        />
       ))}
     </div>
   );
