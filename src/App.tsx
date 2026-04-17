@@ -6,6 +6,7 @@ import { MoviesQuery } from "./components/MoviesQuery";
 import { MovieDetailView } from "./components/MovieDetailView";
 import { Layout } from "./components/Layout";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { useUserPlatforms } from "./hooks/useUserPlatforms";
 import { useFavorites } from "./hooks/useFavorites";
 import { FavoritesPage } from "./pages/FavoritesPage";
 import { Movie } from "./types";
@@ -24,10 +25,10 @@ function AppContent() {
   const [search, setSearch] = useState("");
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [visitedIds, setVisitedIds] = useState<string[]>([]);
-  const [platforms, setPlatforms] = useState<PlatformId[]>([]);
   const searchRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   const { favorites, toggleFavorite } = useFavorites();
+  const { platforms, togglePlatform: toggleUserPlatform } = useUserPlatforms();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -48,9 +49,7 @@ function AppContent() {
   };
 
   const togglePlatform = (id: PlatformId) => {
-    setPlatforms(prev =>
-      prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]
-    );
+    toggleUserPlatform(id);
     setSelectedMovie(null);
     setVisitedIds([]);
   };
