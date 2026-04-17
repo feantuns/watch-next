@@ -24,7 +24,9 @@ export function FavoritesPage() {
     <Layout>
       <header className="mb-4">
         <h1 className="text-xl font-bold">
-          Watch <span className="font-normal">next</span>
+          <a href="#/" className="cursor-pointer hover:opacity-70 transition-opacity">
+            Watch <span className="font-normal">next</span>
+          </a>
         </h1>
       </header>
 

@@ -8,7 +8,9 @@ import { Layout } from "./components/Layout";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { useUserPlatforms } from "./hooks/useUserPlatforms";
 import { useFavorites } from "./hooks/useFavorites";
+import { useFavoriteMovies } from "./hooks/useFavoriteMovies";
 import { FavoritesPage } from "./pages/FavoritesPage";
+import { RecommendedSection } from "./components/RecommendedSection";
 import { Movie } from "./types";
 
 const PLATFORMS = [
@@ -28,6 +30,7 @@ function AppContent() {
   const searchRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   const { favorites, toggleFavorite } = useFavorites();
+  const { movies: favoriteMovies } = useFavoriteMovies();
   const { platforms, togglePlatform: toggleUserPlatform } = useUserPlatforms();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -57,7 +60,10 @@ function AppContent() {
   return (
     <Layout>
       <header className="mb-4">
-        <h1 className="text-xl font-bold">
+        <h1
+          className={`text-xl inline font-bold ${selectedMovie ? "cursor-pointer hover:opacity-70 transition-opacity" : ""}`}
+          onClick={selectedMovie ? () => { setSelectedMovie(null); setVisitedIds([]); } : undefined}
+        >
           Watch <span className="font-normal">next</span>
         </h1>
       </header>
@@ -112,27 +118,32 @@ function AppContent() {
         ))}
       </div>
 
-      {search && (
-        selectedMovie
-          ? (
-            <MovieDetailView
-              movie={selectedMovie}
-              excludeIds={visitedIds}
-              onClose={() => { setSelectedMovie(null); setVisitedIds([]); }}
-              onSelectMovie={handleSelectMovie}
-              favorites={favorites}
-              onToggleFavorite={user ? toggleFavorite : undefined}
-            />
-          )
-          : (
-            <MoviesQuery
-              search={search}
-              platforms={platforms}
-              onSelectMovie={handleSelectMovie}
-              favorites={favorites}
-              onToggleFavorite={user ? toggleFavorite : undefined}
-            />
-          )
+      {selectedMovie ? (
+        <MovieDetailView
+          movie={selectedMovie}
+          excludeIds={visitedIds}
+          onClose={() => { setSelectedMovie(null); setVisitedIds([]); }}
+          onSelectMovie={handleSelectMovie}
+          favorites={favorites}
+          onToggleFavorite={user ? toggleFavorite : undefined}
+        />
+      ) : search ? (
+        <MoviesQuery
+          search={search}
+          platforms={platforms}
+          onSelectMovie={handleSelectMovie}
+          favorites={favorites}
+          onToggleFavorite={user ? toggleFavorite : undefined}
+        />
+      ) : (
+        user && favoriteMovies.length > 0 && (
+          <RecommendedSection
+            favoriteMovies={favoriteMovies}
+            favorites={favorites}
+            onSelectMovie={handleSelectMovie}
+            onToggleFavorite={toggleFavorite}
+          />
+        )
       )}
     </Layout>
   );
