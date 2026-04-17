@@ -15,7 +15,12 @@ export function MovieDetailView({ movie, excludeIds = [], onClose, onSelectMovie
   return (
     <div className="w-full bg-[#fbfbfb] text-gray-800 font-sans mt-4">
       {/* Current movie — smaller, secondary */}
-      <div className="flex items-center gap-3 opacity-60">
+      <a
+        href={`https://www.imdb.com/title/${movie.id}/`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-3 opacity-60 hover:opacity-80 transition-opacity"
+      >
         {movie.src ? (
           <img
             src={movie.src}
@@ -34,7 +39,7 @@ export function MovieDetailView({ movie, excludeIds = [], onClose, onSelectMovie
           <p className="text-xs uppercase tracking-wide text-gray-400 mb-0.5">Your pick</p>
           <h2 className="text-sm font-semibold text-gray-600">{movie.name}</h2>
         </div>
-      </div>
+      </a>
 
       {/* Watch next — larger, primary */}
       <div className="mt-6">

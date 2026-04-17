@@ -9,6 +9,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import { useUserPlatforms } from "./hooks/useUserPlatforms";
 import { useFavorites } from "./hooks/useFavorites";
 import { useFavoriteMovies } from "./hooks/useFavoriteMovies";
+import { useRandomMovie } from "./hooks/useRandomMovie";
 import { FavoritesPage } from "./pages/FavoritesPage";
 import { RecommendedSection } from "./components/RecommendedSection";
 import { Movie } from "./types";
@@ -32,6 +33,12 @@ function AppContent() {
   const { favorites, toggleFavorite } = useFavorites();
   const { movies: favoriteMovies } = useFavoriteMovies();
   const { platforms, togglePlatform: toggleUserPlatform } = useUserPlatforms();
+  const { fetchRandom, isLoading: isLoadingRandom } = useRandomMovie();
+
+  const handleSurpriseMe = async () => {
+    const movie = await fetchRandom(platforms);
+    if (movie) handleSelectMovie(movie);
+  };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -98,6 +105,14 @@ function AppContent() {
         </div>
         <button type="submit" className="font-semibold">
           Buscar
+        </button>
+        <button
+          type="button"
+          onClick={handleSurpriseMe}
+          disabled={isLoadingRandom}
+          className="text-sm text-gray-500 hover:text-gray-800 transition-colors disabled:opacity-50 whitespace-nowrap"
+        >
+          <span className={isLoadingRandom ? "inline-block animate-spin" : ""}>🎲</span> Surpreenda-me
         </button>
       </form>
 
