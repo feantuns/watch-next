@@ -10,6 +10,11 @@ export function Layout({ children }: React.PropsWithChildren<{}>) {
   const location = useLocation();
   const onFavoritesPage = location.pathname === "/favorites";
 
+  const handleSignOut = async () => {
+    await signOut();
+    if (location.pathname !== "/") navigate("/");
+  };
+
   return (
     <main className="flex min-h-screen items-center justify-center">
       <div className="max-w-xl w-full p-6 mb-48">
@@ -24,7 +29,7 @@ export function Layout({ children }: React.PropsWithChildren<{}>) {
           )}
           <div className="ml-auto">
             {user ? (
-              <button onClick={signOut} className="text-sm text-gray-500 hover:underline">
+              <button onClick={handleSignOut} className="text-sm text-gray-500 hover:underline">
                 Sair ({user.email})
               </button>
             ) : (
