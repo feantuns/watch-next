@@ -1,5 +1,6 @@
 import NoImage from "../assets/no-image.svg";
 import { Movie } from "../types";
+import { FavoriteButton } from "./FavoriteButton";
 
 interface MovieCardProps {
   movie: Movie;
@@ -36,13 +37,11 @@ export function MovieCard({ movie, handleClick, isFavorite, onToggleFavorite }: 
       </button>
 
       {onToggleFavorite && (
-        <button
-          onClick={() => onToggleFavorite(movie)}
-          className={`absolute top-2 right-2 text-2xl leading-none drop-shadow ${isFavorite ? "text-yellow-400" : "text-yellow-400/60 hover:text-yellow-400/80"}`}
-          aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-        >
-          {isFavorite ? "★" : "☆"}
-        </button>
+        <FavoriteButton
+          movie={movie}
+          isFavorite={!!isFavorite}
+          onToggle={onToggleFavorite}
+        />
       )}
     </div>
   );

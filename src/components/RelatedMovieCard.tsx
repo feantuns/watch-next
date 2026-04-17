@@ -1,5 +1,6 @@
 import NoImage from "../assets/no-image.svg";
 import { Movie } from "../types";
+import { FavoriteButton } from "./FavoriteButton";
 
 interface RelatedMovieCardProps {
   movie: Movie;
@@ -27,13 +28,11 @@ export function RelatedMovieCard({ movie, onClick, isFavorite, onToggleFavorite 
           </div>
         )}
         {onToggleFavorite && (
-          <button
-            onClick={e => { e.stopPropagation(); onToggleFavorite(movie); }}
-            className={`absolute top-2 right-2 text-2xl leading-none drop-shadow ${isFavorite ? "text-yellow-400" : "text-yellow-400/40 hover:text-yellow-400/70"}`}
-            aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-          >
-            {isFavorite ? "★" : "☆"}
-          </button>
+          <FavoriteButton
+            movie={movie}
+            isFavorite={!!isFavorite}
+            onToggle={onToggleFavorite}
+          />
         )}
       </div>
       <div className="flex flex-col gap-1 min-w-0" onClick={() => onClick(movie)}>
