@@ -24,7 +24,7 @@ function AppContent() {
   const [search, setSearch] = useState("");
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [visitedIds, setVisitedIds] = useState<string[]>([]);
-  const [platform, setPlatform] = useState<PlatformId | null>(null);
+  const [platforms, setPlatforms] = useState<PlatformId[]>([]);
   const searchRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   const { favorites, toggleFavorite } = useFavorites();
@@ -48,7 +48,9 @@ function AppContent() {
   };
 
   const togglePlatform = (id: PlatformId) => {
-    setPlatform(prev => (prev === id ? null : id));
+    setPlatforms(prev =>
+      prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]
+    );
     setSelectedMovie(null);
     setVisitedIds([]);
   };
@@ -101,7 +103,7 @@ function AppContent() {
             type="button"
             onClick={() => togglePlatform(p.id)}
             className={`px-3 py-1 rounded-full text-sm border font-medium transition-opacity ${
-              platform === p.id
+              platforms.includes(p.id)
                 ? p.color
                 : "bg-transparent text-gray-500 border-gray-300 hover:border-gray-500"
             }`}
@@ -126,7 +128,7 @@ function AppContent() {
           : (
             <MoviesQuery
               search={search}
-              platform={platform}
+              platforms={platforms}
               onSelectMovie={handleSelectMovie}
               favorites={favorites}
               onToggleFavorite={user ? toggleFavorite : undefined}
