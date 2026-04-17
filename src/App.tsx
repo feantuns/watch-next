@@ -1,4 +1,5 @@
 import { FormEvent, useRef, useState } from "react";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "./api/queryClient";
 import { MoviesQuery } from "./components/MoviesQuery";
@@ -6,6 +7,7 @@ import { MovieDetailView } from "./components/MovieDetailView";
 import { Layout } from "./components/Layout";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { useFavorites } from "./hooks/useFavorites";
+import { FavoritesPage } from "./pages/FavoritesPage";
 import { Movie } from "./types";
 
 const PLATFORMS = [
@@ -137,11 +139,16 @@ function AppContent() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
-    </QueryClientProvider>
+    <HashRouter>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<AppContent />} />
+            <Route path="/favorites" element={<FavoritesPage />} />
+          </Routes>
+        </AuthProvider>
+      </QueryClientProvider>
+    </HashRouter>
   );
 }
 
