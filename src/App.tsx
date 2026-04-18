@@ -75,8 +75,8 @@ function AppContent() {
         </h1>
       </header>
 
-      <form onSubmit={handleSubmit} className="w-full flex justify-between gap-4">
-        <div className="relative flex-1">
+      <form onSubmit={handleSubmit} className="w-full flex flex-wrap gap-2">
+        <div className="relative flex-1 min-w-0">
           <input
             id="search"
             type="text"
@@ -103,17 +103,19 @@ function AppContent() {
             </button>
           )}
         </div>
-        <button type="submit" className="font-semibold">
-          Buscar
-        </button>
-        <button
-          type="button"
-          onClick={handleSurpriseMe}
-          disabled={isLoadingRandom}
-          className="text-sm text-gray-500 hover:text-gray-800 transition-colors disabled:opacity-50 whitespace-nowrap"
-        >
-          <span className={isLoadingRandom ? "inline-block animate-spin" : ""}>🎲</span> Surpreenda-me
-        </button>
+        <div className="flex gap-4 w-full sm:w-auto">
+          <button type="submit" className="font-semibold">
+            Buscar
+          </button>
+          <button
+            type="button"
+            onClick={handleSurpriseMe}
+            disabled={isLoadingRandom}
+            className="text-sm text-gray-500 hover:text-gray-800 transition-colors disabled:opacity-50 whitespace-nowrap"
+          >
+            <span className={isLoadingRandom ? "inline-block animate-spin" : ""}>🎲</span> Surpreenda-me
+          </button>
+        </div>
       </form>
 
       <div className="flex flex-wrap gap-2 mt-3">
