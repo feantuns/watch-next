@@ -36,7 +36,7 @@ function AppContent() {
   const { fetchRandom, isLoading: isLoadingRandom } = useRandomMovie();
 
   const handleSurpriseMe = async () => {
-    const movie = await fetchRandom(platforms);
+    const movie = await fetchRandom(platforms, visitedIds);
     if (movie) handleSelectMovie(movie);
   };
 

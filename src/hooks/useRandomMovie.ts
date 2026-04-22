@@ -20,13 +20,17 @@ function normalizeMovie(raw: RandomMovieApiResponse): Movie {
 export function useRandomMovie() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchRandom = async (platforms: string[] = []): Promise<Movie | null> => {
+  const fetchRandom = async (platforms: string[] = [], excludeIds: string[] = []): Promise<Movie | null> => {
     setIsLoading(true);
     try {
-      const params = platforms.length > 0
-        ? "?" + platforms.map(p => `platforms=${p}`).join("&")
-        : "";
-      const res = await fetch(`${import.meta.env.VITE_APP_BASE_URL}/movies/random${params}`);
+      const params = new URLSearchParams();
+      platforms.forEach(p => params.append("platforms", p));
+      excludeIds.forEach(id => params.append("exclude", id));
+      
+      const queryString = params.toString();
+      const url = `${import.meta.env.VITE_APP_BASE_URL}/movies/random${queryString ? `?${queryString}` : ""}`;
+      
+      const res = await fetch(url);
       if (!res.ok) return null;
       const raw: RandomMovieApiResponse = await res.json();
       return normalizeMovie(raw);
