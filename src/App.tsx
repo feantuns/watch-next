@@ -1,6 +1,7 @@
-import { FormEvent, useRef, useState } from "react";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
 import { QueryClientProvider } from "react-query";
+import ReactGA from "react-ga4";
 import { queryClient } from "./api/queryClient";
 import { MoviesQuery } from "./components/MoviesQuery";
 import { MovieDetailView } from "./components/MovieDetailView";
@@ -171,6 +172,7 @@ function App() {
     <HashRouter>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
+          <RouteTracker />
           <Routes>
             <Route path="/" element={<AppContent />} />
             <Route path="/favorites" element={<FavoritesPage />} />
@@ -179,6 +181,14 @@ function App() {
       </QueryClientProvider>
     </HashRouter>
   );
+}
+
+function RouteTracker() {
+  const location = useLocation();
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: location.pathname });
+  }, [location]);
+  return null;
 }
 
 export default App;
