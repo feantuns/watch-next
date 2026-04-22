@@ -4,10 +4,7 @@ import ReactGA from "react-ga4";
 import App from "./App";
 import "./index.css";
 
-const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
-if (measurementId) {
-  ReactGA.initialize(measurementId);
-}
+ReactGA.initialize("G-XX16PD679M");
 
 const rootEl = document.getElementById("root");
 if (rootEl) {
